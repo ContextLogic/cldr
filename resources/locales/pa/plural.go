@@ -1,3 +1,3 @@
 package pa
 
-var pluralRule = "2A"
+var pluralRule = "2H"
