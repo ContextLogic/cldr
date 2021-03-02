@@ -1,3 +1,3 @@
 package da
 
-var pluralRule = "2C"
+var pluralRule = "2H"

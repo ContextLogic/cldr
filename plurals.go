@@ -34,7 +34,8 @@ var pluralRules = map[string]PluralRuler{
 	"2E": PluralRulerFunc(pluralRule2E),
 	"2F": PluralRulerFunc(pluralRule2F),
 	"2G": PluralRulerFunc(pluralRule2G),
-	"2H": PluralRulerFunc(pluralRule2G),
+	"2H": PluralRulerFunc(pluralRule2H),
+	"2I": PluralRulerFunc(pluralRule2I),
 	"3A": PluralRulerFunc(pluralRule3A),
 	"3B": PluralRulerFunc(pluralRule3B),
 	"3C": PluralRulerFunc(pluralRule3C),
@@ -250,6 +251,7 @@ func pluralRule1(n NumberValue) PluralRule {
 //     - ku:  Kurdish
 //     - ky:  Kirghiz
 //     - lb:  Luxembourgish
+//     - lg:  Ganda
 //     - mas: Masai
 //     - mgo: Meta'
 //     - ml:  Malayalam
@@ -296,6 +298,7 @@ func pluralRule1(n NumberValue) PluralRule {
 //     - tr:  Turkish
 //     - ts:  Tsonga
 //     - ug:  Uyghur
+//     - uz:  Uzbek
 //     - ve:  Venda
 //     - vo:  Volapük
 //     - vun: Vunjo
@@ -329,20 +332,17 @@ func pluralRule2A(n NumberValue) PluralRule {
 //     - ak:  Akan
 //     - arn: Mapudungun
 //     - bh:  Bihari
-//     - fil: Filipino
 //     - guw: Gun
-//     - hi:  Hindi
 //     - ln:  Lingala
 //     - mfe: Mauritian Creole
 //     - mg:  Malagasy
 //     - mi:  Maori
 //     - nso: Northern Sotho
 //     - oc:  Occitan
+//     - pa:  Punjabi
 //     - si:  Sinhala
 //     - tg:  Tajic
 //     - ti:  Tigrinya
-//     - tl:  Tagalog
-//     - uz:  Uzbek
 //     - wa:  Walloon
 func pluralRule2B(n NumberValue) PluralRule {
 	switch {
@@ -367,7 +367,6 @@ func pluralRule2B(n NumberValue) PluralRule {
 //         - examples: 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, …
 //
 // Languages:
-//     - da:  Danish
 //     - ff:  Fulah
 //     - fr:  French
 //     - hy:  Armenian
@@ -472,7 +471,6 @@ func pluralRule2E(n NumberValue) PluralRule {
 //     - hne: Chhattisgarhi
 //     - ia:  Interlingua
 //     - it:  Italian
-//     - lg:  Ganda
 //     - mai: Maithili
 //     - mni: Manipuri
 //     - nap: Neapolitan
@@ -499,8 +497,8 @@ func pluralRule2F(n NumberValue) PluralRule {
 //
 // This Plural Rule contains 2 forms:
 //     - one:
-//         - rule:     either has integer component 0 or is 1 without decimal places
-//         - examples: 0, 0.1, 0.5, 1
+//         - rule:     either has integer component 0 or is 1
+//         - examples: 0, 0.1, 0.5, 1, 1.0
 //     - other:
 //         - rule:     everything else
 //         - examples: 1.0, 1.1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, …
@@ -510,6 +508,7 @@ func pluralRule2F(n NumberValue) PluralRule {
 //     - bn:  Bengali
 //     - fa:  Persian
 //     - gu:  Gujarati
+//     - hi:  Hindi
 //     - kn:  Kannada
 //     - zu:  Zulu
 func pluralRule2G(n NumberValue) PluralRule {
@@ -524,21 +523,21 @@ func pluralRule2G(n NumberValue) PluralRule {
 }
 
 // pluralRule2H:
-// Logic for calculating the nth plural for Punjabi or languages who share the same rules as Punjabi
+// Logic for calculating the nth plural for Danish or languages who share the same rules as Danish
 //
 // Plural Forms Rules Documented here:
 // https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html
 //
 // This Plural Rule contains 2 forms:
 //     - one:
-//         - rule:     has value equal to 0 or 1, trailing zeroes allowed
-//         - examples: 0, 0.0, 1, 1.0, ...
+//         - rule:     integer value = 0, 1 without trailing zeroes
+//         - examples: 0.1, 1, 1.0, 1.5, ...
 //     - other:
 //         - rule:     everything else
-//         - examples: 0.1, 1.1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, …
+//         - examples: 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, …
 //
 // Languages:
-//     - pa:  Punjabi
+//     - da:  Danish
 func pluralRule2H(n NumberValue) PluralRule {
 	switch {
 	case toFloat64(n) == float64(0) || toFloat64(n) == float64(1):
@@ -546,6 +545,34 @@ func pluralRule2H(n NumberValue) PluralRule {
 	}
 	return PluralRuleOther
 }
+
+// pluralRule2I:
+// Logic for calculating the nth plural for Filipino or languages who share the same rules as Filipino
+//
+// Plural Forms Rules Documented here:
+// https://unicode-org.github.io/cldr-staging/charts/37/supplemental/language_plural_rules.html
+//
+// This Plural Rule contains 2 forms:
+//     - one:
+//         - rule:     has integer value 1,2,3 or i%10 != 4,6,9
+//         - examples: 0, 1, 2, 3, 5, 7, 8, 10, 13, 15, ...
+//     - other:
+//         - rule:     everything else
+//         - examples: 0.1, 1.5, 4, 6, 9, 14, 16, 19, …
+//
+// Languages:
+//     - fil: Filipino
+//     - tl:  Tagalog
+func pluralRule2I(n NumberValue) PluralRule {
+	i := int64(math.Abs(toFloat64(n)))
+	mod10 := i % 10
+	switch {
+	case isInt(n) && mod10 != 4 && mod10 != 6 && mod10 != 9:
+		return PluralRuleOne
+	}
+	return PluralRuleOther
+}
+
 
 // pluralRule3A:
 // Logic for calculating the nth plural for Latvian or languages who share the same rules as Latvian
@@ -628,14 +655,14 @@ func pluralRule3B(n NumberValue) PluralRule {
 //
 // This Plural Rule contains 3 forms:
 //     - one:
-//         - rule:     n is 1
+//         - rule:     n is 1 without decimals
 //         - examples: 1
 //     - few:
-//         - rule:     n is 0 OR n is not 1 AND n mod 100 in 1..19
-//         - examples: 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 101, …
+//         - rule:     n has decimal places OR n is 0 OR n mod 100 in 2..19
+//         - examples: 0, 0.5, 1.0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 101, …
 //     - other:
 //         - rule:     everything else
-//         - examples: 0.5, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, …
+//         - examples: 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, …
 //
 // Languages:
 //     - ro: Romanian
@@ -847,8 +874,8 @@ func pluralRule3H(n NumberValue) PluralRule {
 //         - rule:     n is 2
 //         - examples: 2
 //     - many:
-//         - rule:     n is not 0 AND n mod 10 is 0
-//         - examples: 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, …
+//         - rule:     n is not 0, 10 AND n mod 10 is 0
+//         - examples: 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, …
 //     - other:
 //         - rule:     everything else
 //         - examples: 0, 0.5, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 21, 22, …

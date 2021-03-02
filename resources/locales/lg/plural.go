@@ -1,3 +1,3 @@
 package lg
 
-var pluralRule = "2F"
+var pluralRule = "2A"

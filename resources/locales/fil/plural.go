@@ -1,3 +1,3 @@
 package fil
 
-var pluralRule = "2B"
+var pluralRule = "2I"

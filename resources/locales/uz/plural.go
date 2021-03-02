@@ -1,3 +1,3 @@
 package uz
 
-var pluralRule = "2B"
+var pluralRule = "2A"
