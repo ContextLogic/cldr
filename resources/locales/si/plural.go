@@ -1,3 +1,3 @@
 package si
 
-var pluralRule = "2A"
+var pluralRule = "2B"

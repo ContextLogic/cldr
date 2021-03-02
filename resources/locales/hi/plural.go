@@ -1,3 +1,3 @@
 package hi
 
-var pluralRule = "2B"
+var pluralRule = "2G"

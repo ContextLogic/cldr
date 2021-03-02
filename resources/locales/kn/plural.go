@@ -1,3 +1,3 @@
 package kn
 
-var pluralRule = "1"
+var pluralRule = "2G"
